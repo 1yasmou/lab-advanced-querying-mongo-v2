@@ -8,8 +8,7 @@
 
 <!-- Your Query Goes Here -->
 
-Query: {name: 'Babelgum'}
-Projection: {name: 1, \_id: 0}
+db.companies.find({name: 'Babelgum'}, {name: 1, \_id: 0})
 
 <br>
 
@@ -17,15 +16,13 @@ Projection: {name: 1, \_id: 0}
 
 <!-- Your Query Goes Here -->
 
-Query: {number_of_employees: { $gt: 5000 }}
-Limit: 20
+db.companies.find({number_of_employees: { $gt: 5000 }}).limit(20).sort({number_of_employees: 1})
 
 <br>
 
 **3. All the companies founded between 2000 and 2005, both years included. Retrieve only the `name` and `founded_year` fields.**
 
-Query: {$and: [{founded_year: {$gte: 2000}}, {founded_year:{$lte: 2005}}]}
-Projection: {name: 1, \_id: 0, founded_year: 1}
+db.companies.find({$and: [{founded_year: {$gte: 2000}}, {founded_year:{$lte: 2005}}]}, {name: 1, \_id: 0, founded_year: 1})
 
 <!-- Your Query Goes Here -->
 
@@ -35,9 +32,7 @@ Projection: {name: 1, \_id: 0, founded_year: 1}
 
 <!-- Your Query Goes Here -->
 
-Query: {$and: [{'ipo.valuation_amount': {$gte: 10000000}}, {founded_year:{$lt: 2010}}]}
-Shorthand: {founded_year: {$lt:2010}, "ipo.valuation_amount": {$gt: 100000000}}
-Projection: {name: 1, \_id: 0, ipo: 1}
+db.companies.find({$and: [{'ipo.valuation_amount': {$gte: 10000000}}, {founded_year:{$lt: 2010}}]}, {name: 1, \_id: 0, ipo: 1})
 
 <br>
 
@@ -45,11 +40,15 @@ Projection: {name: 1, \_id: 0, ipo: 1}
 
 <!-- Your Query Goes Here -->
 
+db.companies.find({partners: {$exists: false}})
+
 <br>
 
 **6. All the companies that have a null value on the `category_code` field.**
 
 <!-- Your Query Goes Here -->
+
+db.companies.find({category_code: {$type: 'null'}})
 
 <br>
 
@@ -57,24 +56,29 @@ Projection: {name: 1, \_id: 0, ipo: 1}
 
 <!-- Your Query Goes Here -->
 
+db.companies.find().sort({'ipo.valuation_amount': -1})
+
 <br>
 
 **8. Retrieve the 10 companies with most employees, order by the `number of employees`.**
 
 <!-- Your Query Goes Here -->
 
+db.companies.find().sort({number_of_employees: -1}).limit(10)
 <br>
 
 **9. All the companies founded on the second semester of the year (July to December). Limit your search to 1000 companies.**
 
 <!-- Your Query Goes Here -->
 
+db.companies.find({founded_month: {$gte: 7, $lte: 12}}).limit(1000)
 <br>
 
 **10. All the companies that have been founded on the first seven days of the month, including the seventh. Sort them by their `acquisition price` in a descending order. Limit the search to 10 documents.**
 
 <!-- Your Query Goes Here -->
 
+db.companies.find({founded_day: {$lte: 7}}).sort({'acquisition.price_amount': -1}).limit(10)
 <br>
 
 ## Iteration 3 (Bonus)
